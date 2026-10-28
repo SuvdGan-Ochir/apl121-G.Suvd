@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="quest"/>
+        <attribute name="authors" value="APL121"/>
+        <attribute name="about" value="Tegsh, sondgoin udur"/>
+        <attribute name="saved" value="2026-10-28 08:30:00 PM"/>
+        <attribute name="created" value="MjAyNi0xMC0yODswODozMDowMCBQTTs="/>
+        <attribute name="edited" value="MjAyNi0xMC0yODswODozMDowMCBQTTs="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="digit" type="Integer" array="True" size="3"/>
+            <declare name="cnt" type="Integer" array="True" size="3"/>
+            <declare name="today" type="Integer" array="False" size=""/>
+            <declare name="i" type="Integer" array="False" size=""/>
+            <declare name="day" type="Integer" array="False" size=""/>
+            <declare name="best" type="Integer" array="False" size=""/>
+            <output expression="&quot;=== Tegsh, sondgoin udur ===&quot;" newline="True"/>
+            <for variable="i" start="0" end="2" direction="inc" step="1">
+                <body>
+                    <assign variable="digit[i]" expression="readInt(&quot;Mashin dugaariin suuliin tsifr (0-9): &quot;, 0, 9)"/>
+                </body>
+            </for>
+            <assign variable="today" expression="readInt(&quot;Onoodriin garag (1=Davaa ... 7=Nyam): &quot;, 1, 7)"/>
+            <output expression="&quot;Onoodor (&quot; &amp; dayName(today) &amp; &quot;):&quot;" newline="True"/>
+            <for variable="i" start="0" end="2" direction="inc" step="1">
+                <body>
+                    <if expression="canDrive(digit[i], today) = 1">
+                        <then>
+                            <output expression="&quot;Mashin &quot; &amp; (i + 1) &amp; &quot;: yavj BOLNO&quot;" newline="True"/>
+                        </then>
+                        <else>
+                            <output expression="&quot;Mashin &quot; &amp; (i + 1) &amp; &quot;: yavj BOLOHGUI&quot;" newline="True"/>
+                        </else>
+                    </if>
+                </body>
+            </for>
+            <output expression="&quot;7 honogiin husnegt:&quot;" newline="True"/>
+            <for variable="day" start="1" end="7" direction="inc" step="1">
+                <body>
+                    <output expression="dayName(day) &amp; &quot;  &quot;" newline="False"/>
+                    <for variable="i" start="0" end="2" direction="inc" step="1">
+                        <body>
+                            <if expression="canDrive(digit[i], day) = 1">
+                                <then>
+                                    <output expression="&quot;Yavna    &quot;" newline="False"/>
+                                </then>
+                                <else>
+                                    <output expression="&quot;Horiotoi &quot;" newline="False"/>
+                                </else>
+                            </if>
+                        </body>
+                    </for>
+                    <output expression="&quot;&quot;" newline="True"/>
+                </body>
+            </for>
+            <for variable="i" start="0" end="2" direction="inc" step="1">
+                <body>
+                    <assign variable="cnt[i]" expression="countDays(digit[i])"/>
+                    <output expression="&quot;Mashin &quot; &amp; (i + 1) &amp; &quot;: &quot; &amp; cnt[i] &amp; &quot; udur&quot;" newline="True"/>
+                </body>
+            </for>
+            <assign variable="best" expression="0"/>
+            <for variable="i" start="1" end="2" direction="inc" step="1">
+                <body>
+                    <if expression="cnt[i] &gt; cnt[best]">
+                        <then>
+                            <assign variable="best" expression="i"/>
+                        </then>
+                        <else/>
+                    </if>
+                </body>
+            </for>
+            <output expression="&quot;Hamgiin olon udur yavah (&quot; &amp; cnt[best] &amp; &quot; udur):&quot;" newline="True"/>
+            <for variable="i" start="0" end="2" direction="inc" step="1">
+                <body>
+                    <if expression="cnt[i] = cnt[best]">
+                        <then>
+                            <output expression="&quot;  Mashin &quot; &amp; (i + 1)" newline="True"/>
+                        </then>
+                        <else/>
+                    </if>
+                </body>
+            </for>
+        </body>
+    </function>
+    <function name="readInt" type="Integer" variable="x">
+        <parameters>
+            <parameter name="prompt" type="String" array="False"/>
+            <parameter name="lo" type="Integer" array="False"/>
+            <parameter name="hi" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="x" type="Integer" array="False" size=""/>
+            <assign variable="x" expression="lo - 1"/>
+            <do expression="x &lt; lo Or x &gt; hi">
+                <body>
+                    <output expression="prompt" newline="False"/>
+                    <input variable="x"/>
+                    <if expression="x &lt; lo Or x &gt; hi">
+                        <then>
+                            <output expression="&quot;Buruu utga!&quot;" newline="True"/>
+                        </then>
+                        <else/>
+                    </if>
+                </body>
+            </do>
+        </body>
+    </function>
+    <function name="canDrive" type="Integer" variable="ok">
+        <parameters>
+            <parameter name="digit" type="Integer" array="False"/>
+            <parameter name="day" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="ok" type="Integer" array="False" size=""/>
+            <if expression="day &gt;= 6">
+                <then>
+                    <assign variable="ok" expression="1"/>
+                </then>
+                <else>
+                    <if expression="(digit % 5) &lt;&gt; (day % 5)">
+                        <then>
+                            <assign variable="ok" expression="1"/>
+                        </then>
+                        <else>
+                            <assign variable="ok" expression="0"/>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="countDays" type="Integer" variable="total">
+        <parameters>
+            <parameter name="digit" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="total" type="Integer" array="False" size=""/>
+            <declare name="d" type="Integer" array="False" size=""/>
+            <assign variable="total" expression="0"/>
+            <for variable="d" start="1" end="7" direction="inc" step="1">
+                <body>
+                    <assign variable="total" expression="total + canDrive(digit, d)"/>
+                </body>
+            </for>
+        </body>
+    </function>
+    <function name="dayName" type="String" variable="nm">
+        <parameters>
+            <parameter name="day" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="nm" type="String" array="False" size=""/>
+            <if expression="day = 1">
+                <then>
+                    <assign variable="nm" expression="&quot;Davaa&quot;"/>
+                </then>
+                <else>
+                    <if expression="day = 2">
+                        <then>
+                            <assign variable="nm" expression="&quot;Myagmar&quot;"/>
+                        </then>
+                        <else>
+                            <if expression="day = 3">
+                                <then>
+                                    <assign variable="nm" expression="&quot;Lhagva&quot;"/>
+                                </then>
+                                <else>
+                                    <if expression="day = 4">
+                                        <then>
+                                            <assign variable="nm" expression="&quot;Purev&quot;"/>
+                                        </then>
+                                        <else>
+                                            <if expression="day = 5">
+                                                <then>
+                                                    <assign variable="nm" expression="&quot;Baasan&quot;"/>
+                                                </then>
+                                                <else>
+                                                    <if expression="day = 6">
+                                                        <then>
+                                                            <assign variable="nm" expression="&quot;Byamba&quot;"/>
+                                                        </then>
+                                                        <else>
+                                                            <assign variable="nm" expression="&quot;Nyam&quot;"/>
+                                                        </else>
+                                                    </if>
+                                                </else>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+</flowgorithm>
